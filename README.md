@@ -1,7 +1,7 @@
 encrypt-tool
 ============
 
-Bash script to encrypt/decrypt arbitrary files using openssl.  Useful for maintaining encrypted versions of files in the cloud, such as Dropbox.
+Bash script to encrypt/decrypt arbitrary files using OpenSSL.  Useful for maintaining encrypted versions of files in the cloud (such as Dropbox), such that local plaintext edits never appear in Dropbox's "previous versions" history.
 
 # Features
 * Uses OpenSSL to perform file encryption
