@@ -74,4 +74,7 @@ user@computer:~$ xxd -g4 /home/user/Dropbox//file.bin
 0000030: 11aba058 9805cac4 10c143b0 7845232b  ...X......C.xE#+
 user@computer:~$ ls -la file*
 -rw-rw-r-- 1 user user 20 Apr 29 15:21 file.txt
+user@computer:~$ xxd -g4 file.txt 
+0000000: 74686973 20697320 73656372 65742064  this is secret d
+0000010: 6174610a                             ata.
 ```
