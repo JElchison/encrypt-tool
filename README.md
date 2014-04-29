@@ -5,11 +5,11 @@ Bash script to encrypt/decrypt arbitrary files using openssl.  Useful for mainta
 
 # Features
 * Uses OpenSSL to perform file encryption
-** Uses AES-256 in Cipher-Block Chaining (CBC mode)
-** Key and IV are derived from a user-defined passphrase
-** Every encryption operation is salted, to avoid having same file encrypt to the same ciphertext on successive runs
+    * Uses AES-256 in Cipher-Block Chaining (CBC mode)
+    * Key and IV are derived from a user-defined passphrase
+    * Every encryption operation is salted, to avoid having same file encrypt to the same ciphertext on successive runs
 * Plaintext file is deleted upon encryption
-** Uses 'shred' utility to overwrite the plaintext file repeatedly, in order to make it harder for even very expensive hardware probing to recover the data
+    * Uses 'shred' utility to overwrite the plaintext file repeatedly, in order to make it harder for even very expensive hardware probing to recover the data
 * Compresses file before encrypting (increases entropy before encryption)
 * Runs on any OS having a Bash environment
 
@@ -23,12 +23,13 @@ To install necessary prerequisites on Ubuntu:
 
 # Installation
 Simply copy encrypt-tool.sh to a directory of your choosing.  Don't forget to make it executable:
+
     chmod +x encrypt-tool.sh
 
 # Usage
 ```
-Usage: ./encrypt-tool.sh encrypt <plaintextFile> [outputDir]
-       ./encrypt-tool.sh decrypt <encryptedFile> <outputFile>
+./encrypt-tool.sh encrypt <plaintextFile> [outputDir]
+./encrypt-tool.sh decrypt <encryptedFile> <outputFile>
 ```
 
 # Example usage
