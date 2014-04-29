@@ -19,6 +19,7 @@ Bash script to encrypt/decrypt arbitrary files using openssl.  Useful for mainta
 
 # Prerequisites
 To install necessary prerequisites on Ubuntu:
+
     sudo apt-get install openssl coreutils gzip
 
 # Installation
