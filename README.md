@@ -5,7 +5,7 @@ Bash script to encrypt/decrypt arbitrary files using OpenSSL.  Useful for mainta
 
 # Features
 * Uses OpenSSL to perform file encryption
-    * Uses AES-256 in Cipher-Block Chaining (CBC mode)
+    * Uses AES-256 in Cipher-Block Chaining (CBC) mode
     * Key and IV are derived from a user-defined passphrase
     * Every encryption operation is salted, to avoid having same file encrypt to the same ciphertext on successive runs
 * Plaintext file is deleted upon encryption
@@ -36,11 +36,14 @@ Simply copy encrypt-tool.sh to a directory of your choosing.  Don't forget to ma
 # Example usage
 ```
 user@computer:~$ echo "this is secret data" > file.txt
+
+user@computer:~$ ls -la file*
+-rw-rw-r-- 1 user user 20 Apr 29 15:20 file.txt
+
 user@computer:~$ xxd -g4 file.txt 
 0000000: 74686973 20697320 73656372 65742064  this is secret d
 0000010: 6174610a                             ata.
-user@computer:~$ ls -la file*
--rw-rw-r-- 1 user user 20 Apr 29 15:20 file.txt
+
 user@computer:~$ ./encrypt-tool.sh encrypt file.txt ~/Dropbox/
 enter aes-256-cbc encryption password:
 Verifying - enter aes-256-cbc encryption password:
@@ -59,23 +62,23 @@ shred: 000: renamed to 00
 shred: 00: renamed to 0
 shred: file.txt: removed
 'file.txt' has been encrypted and shredded.  Encrypted file exists at '/home/user/Dropbox//file.bin'.
+
 user@computer:~$ ls -la file*
 ls: cannot access file*: No such file or directory
+
 user@computer:~$ xxd -g4 /home/user/Dropbox//file.bin
 0000000: 53616c74 65645f5f 616efb1c 9ebfe333  Salted__an.....3
 0000010: 1c8ae442 352ed64c a0944b4a f492722e  ...B5..L..KJ..r.
 0000020: f60440dc 7268bd65 4b7110db cc26e905  ..@.rh.eKq...&..
 0000030: 11aba058 9805cac4 10c143b0 7845232b  ...X......C.xE#+
+
 user@computer:~$ ./encrypt-tool.sh decrypt /home/user/Dropbox//file.bin file.txt
 enter aes-256-cbc decryption password:
 '/home/user/Dropbox//file.bin' has been decrypted.  Plaintext file exists at 'file.txt'.
-user@computer:~$ xxd -g4 /home/user/Dropbox//file.bin
-0000000: 53616c74 65645f5f 616efb1c 9ebfe333  Salted__an.....3
-0000010: 1c8ae442 352ed64c a0944b4a f492722e  ...B5..L..KJ..r.
-0000020: f60440dc 7268bd65 4b7110db cc26e905  ..@.rh.eKq...&..
-0000030: 11aba058 9805cac4 10c143b0 7845232b  ...X......C.xE#+
+
 user@computer:~$ ls -la file*
 -rw-rw-r-- 1 user user 20 Apr 29 15:21 file.txt
+
 user@computer:~$ xxd -g4 file.txt 
 0000000: 74686973 20697320 73656372 65742064  this is secret d
 0000010: 6174610a                             ata.
