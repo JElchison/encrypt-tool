@@ -14,10 +14,10 @@ Bash script to encrypt/decrypt arbitrary files using OpenSSL.  Useful for mainta
 * Runs on any OS having a Bash environment
 
 # Environment
-* Any OS running Bash
+* Any OS having a Bash environment
 * The following tools must be installed and in the PATH:  openssl, shred, gzip, zcat
 
-# Prerequisites
+## Prerequisites
 To install necessary prerequisites on Ubuntu:
 
     sudo apt-get install openssl coreutils gzip
