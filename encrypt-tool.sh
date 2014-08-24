@@ -4,7 +4,7 @@
 #
 # Bash script to encrypt/decrypt arbitrary files using OpenSSL. Useful for maintaining encrypted versions of files in the cloud (such as Dropbox), such that local plaintext edits never appear in Dropbox's "previous versions" history.
 #
-# Version 1.0.0
+# Version 1.0.1
 #
 # Copyright (C) 2014 Jonathan Elchison <JElchison@gmail.com>
 #
@@ -39,14 +39,13 @@ print_usage() {
 }
 
 # ensure have all dependencies
-which openssl > /dev/null && which shred > /dev/null && which gzip > /dev/null && which zcat > /dev/null
-if [[ $? != 0 ]]; then
-    echo "Dependencies unmet.  Please verify that the following are installed and in the PATH:  openssl, shred, gzip, zcat" >&2
+if [[ ! -x $(which openssl) ]] || [[ ! -x $(which shred) ]] || [[ ! -x $(which gzip) ]] || [[ ! -x $(which zcat) ]]; then
+    echo "[-] Dependencies unmet.  Please verify that the following are installed and in the PATH:  openssl, shred, gzip, zcat" >&2
     exit 1
 fi
 
 # check for number of arguments
-if [[ $# < 2 ]] || [[ $# > 3 ]]; then
+if [[ $# -lt 2 ]] || [[ $# -gt 3 ]]; then
     print_usage
     exit 1
 fi
@@ -57,7 +56,7 @@ INPUT_FILE=$2
 
 # test existence of input file
 if [[ ! -e "$INPUT_FILE" ]]; then
-    echo "ERROR: Input file '$INPUT_FILE' does not exist." >&2
+    echo "[-] Input file '$INPUT_FILE' does not exist." >&2
     exit 1
 fi
 
@@ -73,7 +72,7 @@ if [[ "$COMMAND" == "encrypt" ]]; then
 
     # test existence of output directory
     if [[ ! -d "$OUTPUT_DIR" ]]; then
-        echo "ERROR: Output directory '$OUTPUT_DIR' does not exist." >&2
+        echo "[-] Output directory '$OUTPUT_DIR' does not exist." >&2
         exit 1
     fi
 
@@ -86,7 +85,7 @@ if [[ "$COMMAND" == "encrypt" ]]; then
     # shred the input file
     shred -fuvz $INPUT_FILE
     # report success
-    echo "'$INPUT_FILE' has been encrypted and shredded.  Encrypted file exists at '$OUTPUT_PATH'."
+    echo "[*] '$INPUT_FILE' has been encrypted and shredded.  Encrypted file exists at '$OUTPUT_PATH'."
 
 elif [[ "$COMMAND" == "decrypt" ]]; then
 
@@ -102,10 +101,10 @@ elif [[ "$COMMAND" == "decrypt" ]]; then
     # decrypt and decompress
     openssl aes-256-cbc -d -in $INPUT_FILE | zcat > $OUTPUT_FILE
     # report success
-    echo "'$INPUT_FILE' has been decrypted.  Plaintext file exists at '$OUTPUT_FILE'."
+    echo "[*] '$INPUT_FILE' has been decrypted.  Plaintext file exists at '$OUTPUT_FILE'."
 
 else
-    echo "Unknown command '$COMMAND'."
+    echo "[-] Unknown command '$COMMAND'." >&2
     print_usage
     exit 1
 fi
