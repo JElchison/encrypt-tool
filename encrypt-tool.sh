@@ -4,7 +4,7 @@
 #
 # Bash script to encrypt/decrypt arbitrary files using OpenSSL. Useful for maintaining encrypted versions of files in the cloud (such as Dropbox), such that local plaintext edits never appear in Dropbox's "previous versions" history.
 #
-# Version 1.0.1
+# Version 1.0.2
 #
 # Copyright (C) 2014 Jonathan Elchison <JElchison@gmail.com>
 #
@@ -51,8 +51,8 @@ if [[ $# -lt 2 ]] || [[ $# -gt 3 ]]; then
 fi
 
 # setup variables for arguments
-COMMAND=$1
-INPUT_FILE=$2
+COMMAND="$1"
+INPUT_FILE="$2"
 
 # test existence of input file
 if [[ ! -e "$INPUT_FILE" ]]; then
@@ -65,9 +65,9 @@ if [[ "$COMMAND" == "encrypt" ]]; then
 
     # handle optional argument
     if [[ $# == 3 ]]; then
-        OUTPUT_DIR=$3
+        OUTPUT_DIR="$3"
     else
-        OUTPUT_DIR=$(pwd)
+        OUTPUT_DIR="$(pwd)"
     fi
 
     # test existence of output directory
@@ -77,13 +77,13 @@ if [[ "$COMMAND" == "encrypt" ]]; then
     fi
 
     # setup output file path, name
-    OUTPUT_FILE=$(echo $INPUT_FILE | sed -r 's/\.[^\.]+$/.bin/')
-    OUTPUT_PATH=$OUTPUT_DIR/$OUTPUT_FILE
+    OUTPUT_FILE=$(basename "$INPUT_FILE" | sed -r 's/\.[^\.]+$/.bin/')
+    OUTPUT_PATH="$OUTPUT_DIR/$OUTPUT_FILE"
 
     # compress and encrypt
-    gzip -c $INPUT_FILE | openssl aes-256-cbc -salt -out $OUTPUT_PATH
+    gzip -c "$INPUT_FILE" | openssl aes-256-cbc -salt -out "$OUTPUT_PATH"
     # shred the input file
-    shred -fuvz $INPUT_FILE
+    shred -fuvz "$INPUT_FILE"
     # report success
     echo "[*] '$INPUT_FILE' has been encrypted and shredded.  Encrypted file exists at '$OUTPUT_PATH'."
 
@@ -96,10 +96,10 @@ elif [[ "$COMMAND" == "decrypt" ]]; then
     fi
 
     # setup output filename
-    OUTPUT_FILE=$3
+    OUTPUT_FILE="$3"
 
     # decrypt and decompress
-    openssl aes-256-cbc -d -in $INPUT_FILE | zcat > $OUTPUT_FILE
+    openssl aes-256-cbc -d -in "$INPUT_FILE" | zcat > "$OUTPUT_FILE"
     # report success
     echo "[*] '$INPUT_FILE' has been decrypted.  Plaintext file exists at '$OUTPUT_FILE'."
 
