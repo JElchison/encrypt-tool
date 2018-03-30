@@ -5,7 +5,7 @@ Bash script to encrypt/decrypt arbitrary files using OpenSSL.  Useful for mainta
 
 # Features
 * Uses OpenSSL to perform file encryption
-    * Uses AES-256 in Cipher-Block Chaining (CTR) mode
+    * Uses AES-256 in Counter (CTR) mode
     * Key and IV are derived from a user-defined passphrase
     * Every encryption operation is salted, to avoid having same file encrypt to the same ciphertext on successive runs
 * Plaintext file is deleted upon encryption
