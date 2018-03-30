@@ -4,9 +4,9 @@
 #
 # Bash script to encrypt/decrypt arbitrary files using OpenSSL. Useful for maintaining encrypted versions of files in the cloud (such as Dropbox), such that local plaintext edits never appear in Dropbox's "previous versions" history.
 #
-# Version 1.0.2
+# Version 2.0.0
 #
-# Copyright (C) 2014 Jonathan Elchison <JElchison@gmail.com>
+# Copyright (C) 2018 Jonathan Elchison <JElchison@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ if [[ "$COMMAND" == "encrypt" ]]; then
     OUTPUT_PATH="$OUTPUT_DIR/$OUTPUT_FILE"
 
     # compress and encrypt
-    gzip -c "$INPUT_FILE" | openssl aes-256-cbc -salt -out "$OUTPUT_PATH"
+    gzip -c "$INPUT_FILE" | openssl enc -aes-256-ctr -salt -out "$OUTPUT_PATH"
     # shred the input file
     shred -fuvz "$INPUT_FILE"
     # report success
@@ -99,7 +99,7 @@ elif [[ "$COMMAND" == "decrypt" ]]; then
     OUTPUT_FILE="$3"
 
     # decrypt and decompress
-    openssl aes-256-cbc -d -in "$INPUT_FILE" | zcat > "$OUTPUT_FILE"
+    openssl enc -aes-256-ctr -d -in "$INPUT_FILE" | zcat > "$OUTPUT_FILE"
     # report success
     echo "[*] '$INPUT_FILE' has been decrypted.  Plaintext file exists at '$OUTPUT_FILE'."
 
