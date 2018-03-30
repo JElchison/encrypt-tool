@@ -5,7 +5,7 @@ Bash script to encrypt/decrypt arbitrary files using OpenSSL.  Useful for mainta
 
 # Features
 * Uses OpenSSL to perform file encryption
-    * Uses AES-256 in Cipher-Block Chaining (CBC) mode
+    * Uses AES-256 in Cipher-Block Chaining (CTR) mode
     * Key and IV are derived from a user-defined passphrase
     * Every encryption operation is salted, to avoid having same file encrypt to the same ciphertext on successive runs
 * Plaintext file is deleted upon encryption
@@ -45,8 +45,8 @@ user@computer:~$ xxd -g4 file.txt
 0000010: 6174610a                             ata.
 
 user@computer:~$ ./encrypt-tool.sh encrypt file.txt ~/Dropbox/
-enter aes-256-cbc encryption password:
-Verifying - enter aes-256-cbc encryption password:
+enter aes-256-ctr encryption password:
+Verifying - enter aes-256-ctr encryption password:
 shred: file.txt: pass 1/4 (random)...
 shred: file.txt: pass 2/4 (random)...
 shred: file.txt: pass 3/4 (random)...
@@ -73,7 +73,7 @@ user@computer:~$ xxd -g4 /home/user/Dropbox//file.bin
 0000030: 11aba058 9805cac4 10c143b0 7845232b  ...X......C.xE#+
 
 user@computer:~$ ./encrypt-tool.sh decrypt /home/user/Dropbox//file.bin file.txt
-enter aes-256-cbc decryption password:
+enter aes-256-ctr decryption password:
 '/home/user/Dropbox//file.bin' has been decrypted.  Plaintext file exists at 'file.txt'.
 
 user@computer:~$ ls -la file*
